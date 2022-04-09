@@ -5,12 +5,16 @@ import concurrent.futures
 from random import choice
 
 user_agentz = ['Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Avast/70.0.917.102', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/538 (KHTML, like Gecko) Chrome/36 Safari/538', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2599.0 Safari/537.36']
+
+
 def Check_link(ml, coin):
     link = ml + coin
     html = requests.get(link, headers={'user-agent': choice(user_agentz)})
     if html.status_code != 200:
         return 0
     return 1
+
+
 def Check_lofcoin(arr):
     link = 'https://coinmarketcap.com/ru/currencies/'
     try:
@@ -20,7 +24,9 @@ def Check_lofcoin(arr):
                 if z.result() == 0:
                     return -1
         return 1
-    except: pass
+    except Exception as ex: print(repr(ex))
+    
+    
 def get_stats(link, coin):
     try:
         coin_l = link + coin
@@ -36,6 +42,8 @@ def get_stats(link, coin):
             stats += '   -' + diff.text
         return stats
     except: return 0
+    
+    
 def get_arr_stat(arr):
     link = 'https://coinmarketcap.com/currencies/'
     ans = "Stats of your coin list:   &#128185\n"
@@ -47,4 +55,4 @@ def get_arr_stat(arr):
                     ans += '\n---------------------------------\n' + z.result()
                 else: return -1
         return ans
-    except: pass
+    except Exception as ex: print(repr(ex))
